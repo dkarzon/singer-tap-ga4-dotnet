@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tap-ga4-dotnet", "tap-ga4-d
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF438B1F-0E83-4A1C-BF13-B322F1D088BD}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-dev.yml = .github\workflows\build-dev.yml
+		.github\workflows\build-tag.yml = .github\workflows\build-tag.yml
 		README.md = README.md
 		Record-Sample.json = Record-Sample.json
 		Schema-Sample.json = Schema-Sample.json
