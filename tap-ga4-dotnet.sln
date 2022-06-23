@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tap-ga4-dotnet", "tap-ga4-dotnet\tap-ga4-dotnet.csproj", "{1FD77BDF-B64F-4D75-A5EE-584F40F67DCA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF438B1F-0E83-4A1C-BF13-B322F1D088BD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FD77BDF-B64F-4D75-A5EE-584F40F67DCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD77BDF-B64F-4D75-A5EE-584F40F67DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD77BDF-B64F-4D75-A5EE-584F40F67DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD77BDF-B64F-4D75-A5EE-584F40F67DCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62335C2C-69BF-4F98-9204-60B71954A275}
+	EndGlobalSection
+EndGlobal
