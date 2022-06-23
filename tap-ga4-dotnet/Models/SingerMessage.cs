@@ -20,7 +20,7 @@ namespace SingerTapGA4.Models
         public string TimeExtracted { get; set; }
 
         [JsonProperty("record", NullValueHandling = NullValueHandling.Ignore)]
-        public JObject Record { get; set; }
+        public Dictionary<string, object> Record { get; set; }
 
         [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
         public JObject Value { get; set; }

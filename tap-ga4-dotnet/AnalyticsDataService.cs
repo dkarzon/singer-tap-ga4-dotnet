@@ -19,7 +19,7 @@ namespace SingerTapGA4
             }.Build();
         }
 
-        public async Task RunReportsAsync()
+        public void RunReports()
         {
             if (string.IsNullOrEmpty(_config.Reports))
             {
@@ -54,7 +54,13 @@ namespace SingerTapGA4
                     RunReportRequest request = new RunReportRequest
                     {
                         Property = "properties/" + _config.PropertyId,
-                        DateRanges = { new DateRange { StartDate = "2020-03-31", EndDate = "today" }, },
+                        DateRanges = {
+                            new DateRange
+                            {
+                                StartDate = _config.StartDate,
+                                EndDate = _config.EndDate ?? "today"
+                            }
+                        },
                     };
 
                     foreach(var metric in report.Metrics)
@@ -66,15 +72,17 @@ namespace SingerTapGA4
                         request.Dimensions.Add(new Dimension { Name = dimension });
                     }
 
+                    // Async method didn't seem to work here
                     RunReportResponse response = _client.RunReport(request);
 
-                    //TODO: output SCHEMA message
-                    PostMessage(BuildSchema(report));
+                    // output SCHEMA message
+                    var schemaMessage = BuildSchema(report);
+                    PostMessage(schemaMessage);
 
                     foreach (Row row in response.Rows)
                     {
-                        //TODO: output RECORD message
-                        PostMessage(BuildRecord(row, report));
+                        //output RECORD message
+                        PostMessage(BuildRecord(row, report, schemaMessage.Schema));
                     }
                 }
                 catch (Exception ex)
@@ -84,31 +92,101 @@ namespace SingerTapGA4
             }
         }
 
-        private string ToStreamName(string name)
+        private string ToCleanName(string name)
         {
-            return name;
+            return name.Replace(":", "_");
+        }
+
+        private List<string> LookupMetricDataType(string metric)
+        {
+            var dataType = new List<string>
+            {
+                "null"
+            };
+            // This is a hack for now until I come up with a better way to do it.
+            var lowerMetric = metric.ToLower();
+            if (lowerMetric.Contains("rate") || lowerMetric.Contains("avg") || lowerMetric.Contains("duration"))
+            {
+                dataType.Add("number");
+            }
+            else
+            {
+                dataType.Add("integer");
+            }
+            return dataType;
         }
 
         private SingerMessage BuildSchema(ReportConfig report)
         {
+            var schemaProps = new Dictionary<string, SingerSchemaProperty>();
+            foreach (var d in report.Dimensions)
+            {
+                schemaProps.Add(ToCleanName(d), new SingerSchemaProperty
+                {
+                    Type = new List<string> { "string" }
+                });
+            }
+            foreach (var m in report.Metrics)
+            {
+                schemaProps.Add(ToCleanName(m), new SingerSchemaProperty
+                {
+                    Type = LookupMetricDataType(m)
+                });
+            }
+
             return new SingerMessage
             {
-                Stream = ToStreamName(report.Name),
+                Stream = ToCleanName(report.Name),
                 Type = SingerMessageType.SCHEMA,
                 Schema = new SingerSchema
                 {
-                    
-                }
+                    Type = new List<string> // Hardcoding since we always return a row object
+                    {
+                        "null",
+                        "object"
+                    },
+                    Properties = schemaProps
+                },
+                KeyProperties = report.Dimensions.Select(d => ToCleanName(d)).ToList()
             };
         }
 
-        private SingerMessage BuildRecord(Row row, ReportConfig report)
+        private SingerMessage BuildRecord(Row row, ReportConfig report, SingerSchema schema)
         {
+            var record = new Dictionary<string, object>();
+            for (var i = 0; i < report.Dimensions.Count; i++)
+            {
+                // Always a string
+                record.Add(ToCleanName(report.Dimensions[i]), row.DimensionValues[i].Value);
+            }
+            for (var i = 0; i < report.Metrics.Count; i++)
+            {
+                // Check what type we are set in the schema and convert to that type
+                var cleanName = ToCleanName(report.Metrics[i]);
+                var value = ConvertMetricValue(cleanName, row.MetricValues[i].Value, schema);
+                record.Add(cleanName, value);
+            }
+
             return new SingerMessage
             {
-                Stream = ToStreamName(report.Name),
-                Type = SingerMessageType.RECORD
+                Stream = ToCleanName(report.Name),
+                Type = SingerMessageType.RECORD,
+                Record = record
             };
+        }
+
+        private object ConvertMetricValue(string cleanName, string value, SingerSchema schema)
+        {
+            var thisSchema = schema.Properties[cleanName].Type.First(t => t != "null");
+            if (thisSchema == "integer")
+            {
+                return Convert.ToInt32(value);
+            }
+            else if (thisSchema == "number")
+            {
+                return Convert.ToDouble(value);
+            }
+            return value;
         }
 
         private void PostMessage(object message)

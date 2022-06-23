@@ -1,0 +1,65 @@
+{
+  "type": "SCHEMA",
+  "stream": "ga_acquisition",
+  "schema": {
+    "type": [
+      "null",
+      "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "ga_date": {
+        "type": [
+          "string"
+        ]
+      },
+      "ga_landingPagePath": {
+        "type": [
+          "string"
+        ]
+      },
+      "ga_sourceMedium": {
+        "type": [
+          "string"
+        ]
+      },
+      "ga_campaign": {
+        "type": [
+          "string"
+        ]
+      },
+      "ga_pageviews": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      },
+      "ga_users": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      },
+      "ga_newUsers": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      },
+      "ga_sessions": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      }
+    }
+  },
+  "key_properties": [
+    "ga_date",
+    "ga_landingPagePath",
+    "ga_source",
+    "ga_medium",
+    "ga_sourceMedium",
+    "ga_campaign"
+  ]
+}

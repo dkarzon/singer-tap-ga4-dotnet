@@ -14,5 +14,9 @@ namespace SingerTapGA4.Models
         public string Reports { get; set; }
 
         public string PropertyId { get; set; }
+
+        public string StartDate { get; set; }
+
+        public string? EndDate { get; set; }
     }
 }
