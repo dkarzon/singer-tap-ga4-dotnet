@@ -1,0 +1,23 @@
+{
+  "type": "RECORD",
+  "stream": "ga_acquisition",
+  "record": {
+    "ga_date": "20220622",
+    "ga_landingPagePath": "(not set)",
+    "ga_source": "email",
+    "ga_medium": "email",
+    "ga_sourceMedium": "email / email",
+    "ga_campaign": "(not set)",
+    "ga_pageviews": 0,
+    "ga_uniquePageviews": 0,
+    "ga_users": 1,
+    "ga_newUsers": 0,
+    "ga_sessions": 7,
+    "ga_bounces": 0,
+    "ga_bounceRate": 0.0,
+    "ga_sessionDuration": 77.0,
+    "ga_avgSessionDuration": 11.0,
+    "report_start_date": "2022-06-22",
+    "report_end_date": "2022-06-23"
+  }
+}

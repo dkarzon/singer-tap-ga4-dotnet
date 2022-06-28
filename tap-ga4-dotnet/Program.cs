@@ -12,9 +12,12 @@ Parser.Default
 
         var config = JsonConvert.DeserializeObject<Config>(configJson);
 
+        if (config == null)
+        {
+            throw new NullReferenceException("Unable to deserialize config json.");
+        }
+
         var analyticsService = new AnalyticsDataService(config);
 
         analyticsService.RunReports();
-
-        Console.ReadLine();
     });

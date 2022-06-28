@@ -27,8 +27,7 @@ namespace SingerTapGA4
                 return;
             }
 
-            List<ReportConfig>? reports = null;
-
+            List<ReportConfig>? reports;
             try
             {
                 var reportsJson = File.ReadAllText(_config.Reports);
@@ -58,12 +57,12 @@ namespace SingerTapGA4
                             new DateRange
                             {
                                 StartDate = _config.StartDate,
-                                EndDate = _config.EndDate ?? "today"
+                                EndDate = string.IsNullOrEmpty(_config.EndDate) ? "today" : _config.EndDate
                             }
                         },
                     };
 
-                    foreach(var metric in report.Metrics)
+                    foreach (var metric in report.Metrics)
                     {
                         request.Metrics.Add(new Metric { Name = metric });
                     }

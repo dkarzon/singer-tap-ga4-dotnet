@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SingerTapGA4.Converters
 {
@@ -15,7 +10,7 @@ namespace SingerTapGA4.Converters
             return (objectType == typeof(List<T>));
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             JToken token = JToken.Load(reader);
             if (token.Type == JTokenType.Array)
@@ -25,7 +20,7 @@ namespace SingerTapGA4.Converters
             return new List<T> { token.ToObject<T>() };
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             List<T> list = (List<T>)value;
             if (list.Count == 1)
